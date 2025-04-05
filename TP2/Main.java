@@ -5,6 +5,28 @@ import java.util.List;
 
 public class Main {
 
+  public static void main(String[] args) {
+    Main test = new Main();
+
+    System.out.println("Dado [0,2,1,3,4] está ordenado?");
+    int[] arrayIsOrder = {0,2,1,3,4};
+    System.out.println(test.isOrder(arrayIsOrder));
+
+    System.out.println("Dado [1,2,3,4,5,6,7,8,9,10] quiero encontrar el nro 3: ");
+    int[] arrayOrdered = {1,2,3,4,5,6,7,8,9,10};
+    System.out.println(test.searchElemInArrayOrdered(arrayOrdered, 3));
+
+    System.out.println("Conversion decimal a binaria: ");
+    System.out.println(test.convertionBinary(26));
+
+    System.out.println("6 terminos de la secuencia Fibonacci: ");
+    System.out.println(test.firstNTermsFibonacci(6));
+
+    System.out.println("Dado [-3,1,0,2,4,6,10] el numero que coincide con su posicion (si es que lo hay) es: ");
+    int[] array = {-3,1,0,2,4,6,10};
+    System.out.println(test.getElemEqualToPosition(array));
+  }
+
   public boolean isOrder(int[] array) {
     return isOrder(array, 0); // O(n)
   }
@@ -19,6 +41,21 @@ public class Main {
     }
 
     return isOrder(array, i+1);
+  }
+
+  public Integer searchElemInArrayOrdered(int[] array, int value) {
+    return searchElemInArrayOrdered(value, 0, array.length-1, array, 0, (array.length-1)/2);
+  }
+
+  private Integer searchElemInArrayOrdered(int value, int mid, int tmn, int[] array, int result, int midTmn) {
+
+    mid = array[midTmn];
+    if (value != mid) {
+      tmn = tmn - (midTmn + 1);
+      result = searchElemInArrayOrdered(value, mid, tmn, array, result, midTmn);
+    }
+
+    return result;
   }
 
   public List<Integer> convertionBinary(int value) {
@@ -66,26 +103,5 @@ public class Main {
       elem = getElemEqualToPosition(i+1, n, array, array[i+1]);
     }
     return elem;
-  }
-
-  public static void main(String[] args) {
-    Main verifyisorder = new Main();
-    Main convertion = new Main();
-    Main fibonacci = new Main();
-    Main arrayElemToPos = new Main();
-
-    System.out.println("Dado [0,2,1,3,4] está ordenado?");
-    int[] arrayIsOrder = {0,2,1,3,4};
-    System.out.println(verifyisorder.isOrder(arrayIsOrder));
-
-    System.out.println("Conversion decimal a binaria: ");
-    System.out.println(convertion.convertionBinary(26));
-
-    System.out.println("6 terminos de la secuencia Fibonacci: ");
-    System.out.println(fibonacci.firstNTermsFibonacci(6));
-
-    System.out.println("Dado [-3,1,0,2,4,6,10] el numero que coincide con su posicion (si es que lo hay) es: ");
-    int[] array = {-3,1,0,2,4,6,10};
-    System.out.println(arrayElemToPos.getElemEqualToPosition(array));
   }
 }
