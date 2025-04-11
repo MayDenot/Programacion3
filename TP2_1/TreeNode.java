@@ -1,10 +1,10 @@
 package TP2_1;
 
-public class TreeNode {
-  private Integer value;
-  private TreeNode left, right;
+public class TreeNode<T> {
+  private T value;
+  private TreeNode<T> left, right;
 
-  public TreeNode(Integer value) {
+  public TreeNode(T value) {
     this.value = value;
     this.left = null;
     this.right = null;
@@ -19,27 +19,27 @@ public class TreeNode {
             (this.getLeft() != null && this.getRight() == null);
   }
 
-  public TreeNode getLeft() {
+  public TreeNode<T> getLeft() {
     return left;
   }
 
-  public void setLeft(TreeNode left) {
+  public void setLeft(TreeNode<T> left) {
     this.left = left;
   }
 
-  public TreeNode getRight() {
+  public TreeNode<T> getRight() {
     return right;
   }
 
-  public void setRight(TreeNode right) {
+  public void setRight(TreeNode<T> right) {
     this.right = right;
   }
 
-  public Integer getValue() {
+  public T getValue() {
     return value;
   }
 
-  public void setValue(Integer value) {
+  public void setValue(T value) {
     this.value = value;
   }
 }

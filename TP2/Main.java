@@ -43,19 +43,17 @@ public class Main {
     return isOrder(array, i+1);
   }
 
-  public Integer searchElemInArrayOrdered(int[] array, int value) {
-    return searchElemInArrayOrdered(value, 0, array.length-1, array, 0, (array.length-1)/2);
+  public boolean searchElemInArrayOrdered(int[] array, int value) {
+    return searchElemInArrayOrdered(value, 0, array);
   }
 
-  private Integer searchElemInArrayOrdered(int value, int mid, int tmn, int[] array, int result, int midTmn) {
+  private boolean searchElemInArrayOrdered(int value, int i, int[] array) {
 
-    mid = array[midTmn];
-    if (value != mid) {
-      tmn = tmn - (midTmn + 1);
-      result = searchElemInArrayOrdered(value, mid, tmn, array, result, midTmn);
+    if (i >= array.length || array[i] > value) {
+      return false;
+    } else {
+      return array[i] == value || searchElemInArrayOrdered(value, i+1, array);
     }
-
-    return result;
   }
 
   public List<Integer> convertionBinary(int value) {

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Tree {
 
-    TreeNode root;
+    TreeNode<Integer> root;
 
     public Tree() {
       this.root = null;
@@ -19,15 +19,17 @@ public class Tree {
       return hasElem(root, value); // O(n)
     }
 
-    private boolean hasElem(TreeNode node, Integer value) {
+    private boolean hasElem(TreeNode<Integer> node, Integer value) {
       if (node == null) {
         return false;
       }
       if (node.getValue().equals(value)) {
         return true;
+      } else if (node.getValue() > value) {
+        return hasElem(node.getLeft(), value);
+      } else {
+        return hasElem(node.getRight(), value);
       }
-
-      return hasElem(node.getLeft(), value) || hasElem(node.getRight(), value);
     }
 
     public boolean isEmpty() {
@@ -36,26 +38,26 @@ public class Tree {
 
     public void insert(Integer value) { // O((log2 n) . n)
       if (this.isEmpty()) {
-        this.root = new TreeNode(value);
+        this.root = new TreeNode<Integer>(value);
       } else {
-        this.add(this.root, value);
+        this.insert(this.root, value);
       }
     }
 
-    private void add(TreeNode current, Integer value) {
+    private void insert(TreeNode<Integer> current, Integer value) {
       if (current.getValue() > value) {
         if (current.getLeft() == null) {
-          TreeNode tmp = new TreeNode(value);
+          TreeNode<Integer> tmp = new TreeNode<Integer>(value);
           current.setLeft(tmp);
         } else {
-          add(current.getLeft(), value);
+          insert(current.getLeft(), value);
         }
       } else if (current.getValue() < value) {
         if (current.getRight() == null) {
-          TreeNode tmp = new TreeNode(value);
+          TreeNode<Integer> tmp = new TreeNode<Integer>(value);
           current.setRight(tmp);
         } else {
-          add(current.getRight(), value);
+          insert(current.getRight(), value);
         }
       }
     }
@@ -69,7 +71,7 @@ public class Tree {
       return true;
     }
 
-    private TreeNode deleteNode(TreeNode node, Integer value) {
+    private TreeNode<Integer> deleteNode(TreeNode<Integer> node, Integer value) {
       if (node == null) {
         return null;
       }
@@ -84,7 +86,7 @@ public class Tree {
         } else if (node.hasOneSon()) {
           return node.getLeft() != null ? node.getLeft() : node.getRight();
         } else {
-          TreeNode successor = findMin(node.getRight());
+          TreeNode<Integer> successor = findMin(node.getRight());
           node.setValue(successor.getValue());
           node.setRight(deleteNode(node.getRight(), successor.getValue()));
         }
@@ -92,7 +94,7 @@ public class Tree {
       return node;
     }
 
-    private TreeNode findMin(TreeNode node) {
+    private TreeNode<Integer> findMin(TreeNode<Integer> node) {
       while (node.getLeft() != null) {
         node = node.getLeft();
       }
@@ -103,7 +105,7 @@ public class Tree {
       return getHeightRecursive(this.root); // O(n)
     }
 
-    private int getHeightRecursive(TreeNode node) {
+    private int getHeightRecursive(TreeNode<Integer> node) {
       if (node == null) {
         return 0;
       }
@@ -118,24 +120,24 @@ public class Tree {
       posOrder(this.root); // O(n)
     }
 
-    private void posOrder(TreeNode node) {
+    private void posOrder(TreeNode<Integer> node) {
       if (node == null) {
         return;
       }
       posOrder(node.getLeft());
       posOrder(node.getRight());
-      System.out.println(node.getValue() + " ");
+      System.out.print(node.getValue() + ", ");
     }
 
     public void printPreOrder() {
       preOrder(this.root); // O(n)
     }
 
-    private void preOrder(TreeNode node) {
+    private void preOrder(TreeNode<Integer> node) {
       if (node == null) {
         return;
       }
-      System.out.println(node.getValue() + " ");
+      System.out.print(node.getValue() + ", ");
       preOrder(node.getLeft());
       preOrder(node.getRight());
     }
@@ -144,12 +146,12 @@ public class Tree {
       inOrder(this.root); // O(n)
     }
 
-    private void inOrder(TreeNode node) {
+    private void inOrder(TreeNode<Integer> node) {
       if (node == null) {
         return;
       }
       inOrder(node.getLeft());
-      System.out.println(node.getValue() + " ");
+      System.out.print(node.getValue() + ", ");
       inOrder(node.getRight());
     }
 
@@ -157,7 +159,7 @@ public class Tree {
       return getLongestBranch(this.root); // O(n)
     }
 
-    private List<Integer> getLongestBranch(TreeNode node) {
+    private List<Integer> getLongestBranch(TreeNode<Integer> node) {
       if (node == null) {
         return new ArrayList<Integer>();
       }
@@ -178,7 +180,7 @@ public class Tree {
       return getFrontera(this.root, new ArrayList<Integer>());
     }
 
-    private List<Integer> getFrontera(TreeNode node, ArrayList<Integer> result) {
+    private List<Integer> getFrontera(TreeNode<Integer> node, ArrayList<Integer> result) {
       if (node == null) {
         return result;
       }
@@ -196,7 +198,7 @@ public class Tree {
       return getMaxElem(this.root); // O(n)
     }
 
-    private Integer getMaxElem(TreeNode node) {
+    private Integer getMaxElem(TreeNode<Integer> node) {
       if (node == null) {
         return null;
       }
@@ -218,7 +220,7 @@ public class Tree {
       return new ArrayList<>(getElemAtLevel(this.root, level, 0)); // O(n)
     }
 
-    private List<Integer> getElemAtLevel(TreeNode node, int level, int currentLevel) {
+    private List<Integer> getElemAtLevel(TreeNode<Integer> node, int level, int currentLevel) {
       List<Integer> result = new ArrayList<>();
 
       if (level > this.getHeight() || node == null) {
@@ -238,7 +240,7 @@ public class Tree {
       return getSumNodesInt(this.root);
     }
 
-    private int getSumNodesInt(TreeNode node) {
+    private int getSumNodesInt(TreeNode<Integer> node) {
       if (node == null || node.isLeaf()) {
         return 0;
       }
@@ -250,7 +252,7 @@ public class Tree {
       return new ArrayList<>(getLeafsGreaterThan(this.root, K));
     }
 
-    private List<Integer> getLeafsGreaterThan(TreeNode node, int K) {
+    private List<Integer> getLeafsGreaterThan(TreeNode<Integer> node, int K) {
       List<Integer> result = new ArrayList<Integer>();
 
       if (node == null) {
@@ -272,7 +274,7 @@ public class Tree {
       calculateInternalNodes(this.root);
     }
 
-    private int calculateInternalNodes(TreeNode node) {
+    private int calculateInternalNodes(TreeNode<Integer> node) {
       if (node == null) {
         return 0;
       }
@@ -288,24 +290,30 @@ public class Tree {
       return nodeValue;
     }
 
-    public List<String> searchWordsWithNVowels(int N) {
-      ArrayList<String> result = new ArrayList<>();
-      searchWordsWithNVowels(this.root, N, 0, " ", result);
-      return result;
+    @Override
+    public String toString() {
+      if (root == null)
+        return "Árbol vacío";
+      return buildTree(root, "", false);
     }
 
-    private List<String> searchWordsWithNVowels(TreeNode node, int N, int counter, String currentWord, ArrayList<String> result) {
+    private String buildTree(TreeNode<Integer> node, String prefix, boolean isTail) {
       if (node == null) {
-        return null;
+        return "";
       }
 
-      // Guardo la raiz
-      // Busco las ramas
-      // Una vez que llegue a una hoja,
-      // Armo la palabra
-      // Cuento cuantas vocales tiene
-      // Si la cant de vocales q tiene es igual a N
-        // La guardo en result
-      return null;
+      StringBuilder builder = new StringBuilder();
+
+      if (node.getRight() != null) {
+        builder.append(buildTree(node.getRight(), prefix + (isTail ? "│   " : "    "), false));
+      }
+
+      builder.append(prefix).append(isTail ? "└── " : "┌── ").append(node.getValue()).append("\n");
+
+      if (node.getLeft() != null) {
+        builder.append(buildTree(node.getLeft(), prefix + (isTail ? "    " : "│   "), true));
+      }
+
+      return builder.toString();
     }
 }
